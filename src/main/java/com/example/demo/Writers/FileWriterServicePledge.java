@@ -1,19 +1,20 @@
 package com.example.demo.Writers;
 
+import com.example.demo.allPrint.DisplayAllPledgedProducts;
+import com.example.demo.data.entites.Pledge;
 import com.example.demo.data.entites.PledgedProduct;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class FileWriterServicePledgedProduct {
+public class FileWriterServicePledge {
+    private final String filePath = "src/main/resources/entities/pledge/";
+    private ArrayList<String> tempFile;
 
-    private final String filePath = "src/main/resources/entities/pledgedProducts/";
-    private static ArrayList<String> tempFile;
-
-    public static PledgedProduct find(String id) {
+    public Pledge find(String id) throws FileNotFoundException {
         try {
-            File folder = new File("src/main/resources/entities/pledgedProducts");
+            File folder = new File("src/main/resources/entities/pledge");
             File[] files = folder.listFiles();
             for (int i = 0; i < files.length; i++) {
                 tempFile = new ArrayList<>();
@@ -31,13 +32,9 @@ public class FileWriterServicePledgedProduct {
                 break;
 
             }
-            PledgedProduct pledgedProduct = new PledgedProduct();
-            pledgedProduct.setId(Long.valueOf(tempFile.get(0)));
-            pledgedProduct.setName(tempFile.get(1));
-            pledgedProduct.setPrice(Integer.parseInt(tempFile.get(2)));
-            pledgedProduct.setDescription(tempFile.get(3));
-            pledgedProduct.setImage(tempFile.get(4));
-            return pledgedProduct;
+            Pledge pledge = new Pledge();
+            pledge.setId(Long.valueOf(tempFile.get(0)));
+            return pledge;
         } catch (
                 FileNotFoundException e) {
             e.printStackTrace();
@@ -45,11 +42,12 @@ public class FileWriterServicePledgedProduct {
             e.printStackTrace();
         }
 
-        return new PledgedProduct();
+        return new Pledge();
     }
 
 
-    public void write(String text, String fileName) {
+    public void write(String fileName) {
+        String text = fileName + "\n" + LocalDate.now() + "\n" + LocalDate.now().plusMonths(3);
 
         try (FileWriter writer = new FileWriter(filePath + fileName + ".txt", false))
         {
@@ -61,4 +59,3 @@ public class FileWriterServicePledgedProduct {
         }
     }
 }
-

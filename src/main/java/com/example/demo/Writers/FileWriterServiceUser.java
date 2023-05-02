@@ -49,6 +49,30 @@ public class FileWriterServiceUser {
         return new User();
     }
 
+    public Boolean auf(String login, String password) {
+        try {
+            File folder = new File("src/main/resources/entities/users");
+            File[] files = folder.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                tempFile = new ArrayList<>();
+                File file = files[i];
+                FileReader fr = new FileReader(file);
+                BufferedReader reader = new BufferedReader(fr);
+                String line = reader.readLine();
+                while (line != null) {
+                    tempFile.add(line);
+                    line = reader.readLine();
+                }
+                if(tempFile.get(1).equals(login) && tempFile.get(3).equals(password)){
+                    return true;
+                }
+            }
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public void write(String text, String fileName) {
 
